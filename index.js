@@ -1,16 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, Children} from 'react';
 import {View, AppRegistry} from 'react-native';
 
 let nid = 0;
 const observes = [];
 
 class StaticWrapper extends Component {
-    shouldComponentUpdate() {
-        return false;
+    static defaultProps = {
+        shouldComponentUpdate: true
+    };
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.shouldComponentUpdate;
     }
 
     render() {
-        return (<View style={{flex: 1, position: 'relative'}}>{this.props.children}</View>)
+        const child = this.props.children;
+        return (child === null || child === false) ? null : Children.only(child);
     }
 }
 
@@ -45,11 +50,11 @@ AppRegistry.setWrapperComponentProvider(function () {
             const elements = [];
 
             Object.keys(reactElements).forEach((key) => {
-                elements.push(<View key={key}>{reactElements[key]}</View>)
+                elements.push(<StaticWrapper key={key}>{reactElements[key]}</StaticWrapper>)
             });
             return (
                 <View style={{flex: 1, position: 'relative'}}>
-                    <StaticWrapper>
+                    <StaticWrapper shouldComponentUpdate={true}>
                         {this.props.children}
                     </StaticWrapper>
                     {elements}
