@@ -19,7 +19,7 @@ class CModal extends Component {
     render() {
         return (
             <View style={styles.cModal}>
-                <Text>CModal2314124124</Text>
+                <Text>CModal</Text>
             </View>
         )
     }
@@ -42,15 +42,6 @@ export default class App extends Component {
         return (
             <View style={styles.container}>
                 <Button title={'insert a component'} onPress={this.show}/>
-                <Text style={styles.welcome}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit App.js
-                </Text>
-                <Text style={styles.instructions}>
-                    {instructions}
-                </Text>
             </View>
         );
     }
@@ -58,14 +49,13 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
     cModal: {
-        zIndex: 99,
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        height: 36,
-        width: 36,
+        height: 72,
+        width: 72,
         backgroundColor: '#398dee'
     },
     container: {
@@ -73,15 +63,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    }
 });
