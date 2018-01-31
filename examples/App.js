@@ -15,7 +15,7 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-class CModal extends Component {
+class CModal1 extends Component {
     render() {
         return (
             <View style={styles.cModal}>
@@ -25,23 +25,47 @@ class CModal extends Component {
     }
 }
 
-const appWrapper = new AppWrapper(<CModal />);
+class CModal2 extends Component {
+    render() {
+        return (
+            <View style={[styles.cModal, {top: 80}]}>
+                <Text>CModal2222222</Text>
+            </View>
+        )
+    }
+}
+
+const cModal1 = new AppWrapper(<CModal1 />);
+
+const SCModal = {
+    instance: null,
+    show: () => {
+        if (!this.instance) {
+            (new AppWrapper(<CModal2 ref={r => this.instance = r}/>)).subScribe()
+        }
+    },
+    close: () => {}
+}
 
 export default class App extends Component {
 
     show = () => {
-        console.log(appWrapper)
-        if (appWrapper.mounted) {
-            appWrapper.unSubScribe()
+        if (cModal1.mounted) {
+            cModal1.unSubScribe()
         } else {
-            appWrapper.subScribe()
+            cModal1.subScribe()
         }
     };
+
+    show2 = () => {
+        SCModal.show()
+    }
 
     render() {
         return (
             <View style={styles.container}>
                 <Button title={'insert a component'} onPress={this.show}/>
+                <Button title={'insert second component'} onPress={this.show2}/>
             </View>
         );
     }
