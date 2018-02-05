@@ -28,16 +28,14 @@ AppRegistry.setWrapperComponentProvider(function () {
         }
 
         componentWillUnmount() {
-            // remove
             observes.splice(observes.indexOf(this.observe) >>> 0, 1);
         }
 
-        observe = (id, reactElement, mountedChange) => {
-            this.setState(({reactElements}) => {
-                reactElements[id] = reactElement;
+        observe = (id, reactElement, callback, mountedChange) => {
+            const {reactElements} = this.state;
+            reactElements[id] = reactElement;
+            this.setState({reactElements}, () => callback && callback())
 
-                return {reactElements};
-            });
             return () => this.setState(({reactElements}) => {
                 delete reactElements[id];
                 if (mountedChange) mountedChange();
@@ -69,9 +67,10 @@ export default class AppWrapper {
         const id = nid++;
         this.mounted = false;
         this.unSubScribe = () => null;
-        this.subScribe = () => {
+        this.subScribe = (callback) => {
+            if (typeof(callback) !== 'function') throw new Error(`Parms ${callback} should be a callback`)
             this.mounted = true;
-            return observes.forEach(observe => this.unSubScribe = observe(id, reactElement, () => this.mounted = false))
+            return observes.forEach(observe => this.unSubScribe = observe(id, reactElement, callback, () => this.mounted = false))
         };
     }
 }
