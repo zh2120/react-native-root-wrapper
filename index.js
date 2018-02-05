@@ -68,7 +68,7 @@ export default class AppWrapper {
         this.mounted = false;
         this.unSubScribe = () => null;
         this.subScribe = (callback) => {
-            if (typeof(callback) !== 'function') throw new Error(`Parms ${callback} should be a callback`)
+            if (callback && typeof(callback) !== 'function') throw new Error(`Parms ${callback} should be a callback`)
             this.mounted = true;
             return observes.forEach(observe => this.unSubScribe = observe(id, reactElement, callback, () => this.mounted = false))
         };

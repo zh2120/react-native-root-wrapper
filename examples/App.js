@@ -21,32 +21,33 @@ class CModal1 extends Component {
     }
 }
 
+const cModal1 = new AppWrapper(<CModal1/>);
+
 class CModal2 extends Component {
-    state = {visibility: false, text: '123'};
+    initialState = {visibility: false, text: ''};
+    state = {...this.initialState};
     animation = new Animated.Value(0);
 
-    componentDidMount() {
-        this.show({text: '124124'})
-    }
-
-    show = ({text = '555', duration = 300, toValue = 1}) => {
+    show = (text = '555') => {
         this.setState({visibility: true, text}, () => {
             Animated.timing(this.animation, {
-                toValue,
-                duration,
+                toValue: 1,
+                duration: 300,
                 useNativeDriver: true
-            }).start(() => {
-                if (!toValue) {
-                    this.setState({visibility: false})
-                }
-            })
+            }).start()
         })
     };
 
     close = () => {
-       if(this.state.visibility) {
-           this.show({text: '', toValue: 0})
-       }
+        if (this.state.visibility) {
+            Animated.timing(this.animation, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true
+            }).start(() => {
+                this.setState({...this.initialState})
+            })
+        }
     };
 
     render() {
@@ -67,23 +68,19 @@ class CModal2 extends Component {
     }
 }
 
-const cModal1 = new AppWrapper(<CModal1/>);
-
 const SCModal = {
     instance: null,
     show: () => {
         if (!this.instance) {
-            (new AppWrapper(<CModal2 ref={re => (this.instance = re)}/>)).subScribe()
+            (new AppWrapper(<CModal2 ref={re => (this.instance = re)}/>)).subScribe(() => this.instance.show())
         } else {
-            this.instance.show({})
+            this.instance.show()
         }
     },
     close: () => {
-        // console.log(this.instance)
         if (this.instance) {
             this.instance.close()
         }
-
     }
 };
 
