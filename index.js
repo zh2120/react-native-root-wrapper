@@ -52,7 +52,7 @@ AppRegistry.setWrapperComponentProvider(function () {
             });
             return (
                 <View style={{flex: 1, position: 'relative'}}>
-                    <StaticWrapper shouldComponentUpdate={true}>
+                    <StaticWrapper shouldComponentUpdate={false}>
                         {this.props.children}
                     </StaticWrapper>
                     {elements}
